@@ -1,0 +1,33 @@
+version: "3.6"
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: docker/app/Dockerfile
+      args:
+        - REQUIREMENTS_FILE=app.pip
+        - SBLOG_SECRET_KEY=$SBLOG_SECRET_KEY
+        - DJANGO_SETTINGS_MODULE=sblog.settings.production
+        - SUPERUSER_PASSWORD=$SUPERUSER_PASSWORD
+        - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+    image: elmcrest/sblog
+    ports:
+      - "8000:8000"
+    environment:
+      PYTHONUNBUFFERED: 1
+      DJANGO_SETTINGS_MODULE: sblog.settings.production
+      SBLOG_SECRET_KEY: $SBLOG_SECRET_KEY
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      SUPERUSER_PASSWORD: $SUPERUSER_PASSWORD
+    links:
+      - db_sblog
+    volumes:
+      - ./media:/app/media
+    entrypoint: ["dumb-init", "docker/app/startup.sh"]
+
+  db_sblog:
+    image: "postgres:11.4-alpine"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD

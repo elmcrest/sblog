@@ -1,0 +1,17 @@
+
+{% for item in menu %}
+    {% if forloop.first %}
+        <a href="{% url 'articles' %}"
+        class="{% if section == "articles" %}active {% endif %}">
+        Artikel</a>
+    {% elif item.slug == 'about' %}
+        <a href="/"
+        class="{% if request.path == "/" %}active {% endif %}">
+        {{item.headline}}</a>
+    {% else %}
+        <a href="{% url 'menu_view' item.slug %}"
+        class="{% if item.slug in request.path %}active {% endif %}">
+        {{item.headline}}</a>
+    {% endif %}
+{% endfor %}
+<searchbox><input type="search" onkeyup="searchArticles(this)"> Suche</searchbox>

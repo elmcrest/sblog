@@ -1,0 +1,30 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block og_meta %}
+    <meta property="og:title" content="{{article}}"/>
+    {% if article.blog_image_set.first %}
+        <meta property="og:image" content="{{article.blog_image_set.first.image.url}}" />
+    {% else %}
+        <meta property="og:image" content="{% static 'imgs/shark_og_image_white.jpg' %}" />
+    {% endif %}
+{% endblock og_meta %}
+
+{% block title %}{{article}} - {{block.super}}{% endblock title %}
+
+{% block menu %}
+ {% include "snippets/menu.html" %}
+{% endblock menu %}
+
+{% block content_area %}
+{% include "blog/article.html" with article=article %}
+
+{% include "snippets/disqus.html" with absolute_url=object.get_absolute_url unique_identifier=object.get_unique_identifier %}
+{% endblock content_area %}
+
+{% block aside_area %}
+    {{ content.sidebar }}
+    {% if related %}
+        {% include "blog/related_article.html" with related=related %}
+    {% endif %}
+{% endblock aside_area %}

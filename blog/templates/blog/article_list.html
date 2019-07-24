@@ -1,0 +1,35 @@
+{% extends "main/base.html" %}
+
+{% block title %}Artikel - {{block.super}}{% endblock title %}
+
+{% block menu %}
+    {% include "snippets/menu.html" with section="articles" %}
+{% endblock %}
+
+{% block content_area %}
+<article-list>
+    {% for article in object_list %}
+        <article>
+            <info>
+                <span class="timestamp" datetime="{{ article.updated|date:"r" }}">{{ article.updated }}</span>
+                {% for tag in article.tags.all %}
+                <tag><a href="{% url 'articles.by_tag' tag.name %}">{{tag}}</a></tag>
+                {% endfor %}
+            </info>
+            <a href="{% url 'article.detail' article.created.year article.created.month article.slug %}">
+                <h1>{{ article.headline }}</h1>
+            </a>
+        </article>
+    {% endfor %}
+</article-list>
+{% endblock %}
+
+{% block aside_area %}
+    {{ content.sidebar }}
+    <aside-heading>Themen</aside-heading>
+    <tags>
+        {% for tag in all_tags.all %}
+            <tag><a href="{% url 'articles.by_tag' tag.name %}" {% if tag.name in request.path %}class="active"{% endif %}>{{tag}}</a></tag>
+        {% endfor %}
+    </tags>
+{% endblock aside_area %}

@@ -1,0 +1,13 @@
+<article>
+    <info>
+        <span class="timestamp" datetime="{{ article.updated|date:"r" }}">
+            {{ article.updated|date:"DATE_FORMAT" }}
+        </span>
+        {% for tag in article.tags.all %}
+            <tag>{{tag}}</tag>
+        {% endfor %}
+    </info>
+    <h1>{{ article }}</h1>
+    <em class="teaser">{{ article.teaser }}</em>
+    {{ content.main }}
+</article>

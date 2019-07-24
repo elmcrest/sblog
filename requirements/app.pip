@@ -1,0 +1,10 @@
+Django
+psycopg2-binary
+pytz
+django-imagekit
+django-content-editor
+django-taggit
+django-sass-processor
+whitenoise
+brotlipy
+Pillow

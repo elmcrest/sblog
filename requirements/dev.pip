@@ -1,0 +1,7 @@
+-r app.pip
+
+black
+libsass
+django-compressor
+django-debug-toolbar
+Fabric3

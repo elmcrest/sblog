@@ -1,0 +1,87 @@
+{% load sass_tags static %}
+
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% block og_meta %}
+    <meta property="og:title" content="sblog is the best blog." />
+    <meta property="og:image" content="{% static 'imgs/shark_og_image_white.jpg' %}" />
+    {% endblock og_meta %}
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'favicon/site.webmanifest' %}">
+    <link rel="mask-icon" href="{% static 'favicon/safari-pinned-tab.svg' %}" color="#0b72b7">
+    <meta name="msapplication-TileColor" content="#c6cc8e">
+    <meta name="theme-color" content="#ffffff">
+    <link href="https://fonts.googleapis.com/css?family=PT+Serif|Roboto" rel="stylesheet">
+    <link href="{% sass_src 'sass/main.scss' %}" rel="stylesheet" type="text/css" />
+    <title>{% block title %}{{site}}{% endblock %}</title>
+</head>
+
+<body>
+    <content-outer>
+        <header-area>
+            {% include 'snippets/shark_logo.svg' %}
+            <menu>
+                {% block menu %}{% endblock %}
+            </menu>
+            <burger-wrapper>
+                <burger>
+                    <burger-line></burger-line>
+                    <burger-line></burger-line>
+                    <burger-line></burger-line>
+                </burger>
+            </burger-wrapper>
+        </header-area>
+        <content-inner>
+            <content-area>
+                {% block content_area %}
+                {% endblock content_area %}
+            </content-area>
+            <aside-area>
+                {% block aside_area %}
+                {% endblock aside_area %}
+            </aside-area>
+        </content-inner>
+    </content-outer>
+    <script>
+        document.querySelector('burger-wrapper').addEventListener('click', toggleMenu);
+
+        function toggleMenu() {
+
+            document.querySelectorAll("header-area > a").forEach((el) => {
+                el.style.display = el.style.display === "initial" ? "" : "initial";
+            })
+
+            document.querySelectorAll("burger-line").forEach((el, idx) => {
+                if (el.classList.contains(`burgeropen_${idx}`)) {
+                    el.classList.replace(`burgeropen_${idx}`, `burgerclose_${idx}`);
+                } else if (el.classList.contains(`burgerclose_${idx}`)) {
+                    el.classList.replace(`burgerclose_${idx}`, `burgeropen_${idx}`);
+                } else {
+                    el.classList.add(`burgeropen_${idx}`);
+                }
+            })
+
+            let menu = document.querySelector("menu");
+            if (menu.style.height == 0 || menu.style.height == "0px") {
+                menu.style.height = menu.scrollHeight + "px";
+            } else {
+                menu.style.height = 0;
+            }
+        }
+    </script>
+    <script src="{% static 'app/articles_search.js'%}"></script>
+    <script src="{% static 'app/timeago.min.js'%}"></script>
+    <script src="{% static 'app/timeago.locales.min.js'%}"></script>
+    <script>
+        timeago(null, 'de').render(document.querySelectorAll(".timestamp"));
+    </script>
+</body>
+
+</html>
